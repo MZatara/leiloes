@@ -1,4 +1,5 @@
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,9 +50,7 @@ public class conectaDAO {
             return ex.getErrorCode();
         }
     }
-
-
-    
+ 
 
     public void desconectar() {
         try {
@@ -60,4 +59,5 @@ public class conectaDAO {
             //pode-se deixar vazio para evitar uma mensagem de erro desnecessária ao usuário
         }
     }
+
 }
