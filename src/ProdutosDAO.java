@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 public class ProdutosDAO {
     
-       Connection conn;
+    Connection conn;
     PreparedStatement st;
     ResultSet rs;
 
@@ -48,6 +48,8 @@ public class ProdutosDAO {
             return null;
         }
     }
+    
+    
 
     
   

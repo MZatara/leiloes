@@ -32,23 +32,7 @@ public class conectaDAO {
         }
     }
 
-    public int vendeProduto(int id) {
-        int status;
-        try {
 
-            st = conn.prepareStatement("UPDATE produtos set status = ? WHERE id = ?");
-        
-            st.setString(1, "Vendido");
-            st.setInt(2, id);
-
-           status = st.executeUpdate();
-            return status;
-        }
-      catch (SQLException ex) {
-            System.out.println(ex.getErrorCode());
-            return ex.getErrorCode();
-        }
-    }
     
     public int cadastrarProduto(ProdutosDTO produto) {
 
@@ -64,6 +48,23 @@ public class conectaDAO {
             return status; //retornar 1
         } catch (SQLException ex) {
             System.out.println("Erro ao conectar: " + ex.getMessage());
+            return ex.getErrorCode();
+        }
+    }
+        public int vendeProduto(int id) {
+        int status;
+        try {
+
+            st = conn.prepareStatement("UPDATE produtos set status = ? WHERE id = ?");
+        
+            st.setString(1, "Vendido");
+            st.setInt(2, id);
+
+           status = st.executeUpdate();
+            return status;
+        }
+      catch (SQLException ex) {
+            System.out.println(ex.getErrorCode());
             return ex.getErrorCode();
         }
     }
