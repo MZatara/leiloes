@@ -26,12 +26,45 @@ public class listagemVIEW extends javax.swing.JFrame {
        private final String url = "jdbc:mysql://localhost:3306/uc11?useTimezone=true&serverTimezone=UTC&useSSL=false";
     private final String usuario = "root";
     private final String senha = "michael1993";
+        
 
     public listagemVIEW() {
         initComponents();
         this.PreencherTbl("");
     }
+    /*public void enviarValor() {
+        int valor = Integer.parseInt(id_produto_venda.getText()); // Valor a ser passado
+        
+        ProdutosDAO pdao = new ProdutosDAO();
+        pdao.setValor(valor);
+        pdao.venderProduto();
+    }
 
+       /* public void VenderProduto() {
+
+        String novoValor = "Vendido";
+        int id = Integer.parseInt(id_produto_venda.getText());
+        // Consulta SQL para atualizar a coluna
+        String sql = "UPDATE produtos SET status = ? WHERE id = ?";
+
+        try ( java.sql.Connection conn = DriverManager.getConnection(url, usuario, senha);  PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, novoValor);
+            stmt.setInt(2, id);
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            System.out.println("Número de linhas afetadas: " + linhasAfetadas);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }*/
+        
+    public int getId(){
+        int pegaId = Integer.parseInt(id_produto_venda.getText());
+        return pegaId;
+    }
     private void PreencherTbl(String filtro) {
         // preencher a tabela
         conectaDAO dao = new conectaDAO();
@@ -176,13 +209,23 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+ProdutosDAO pdao = new ProdutosDAO();
+conectaDAO cdao = new conectaDAO();
 
-
+boolean status = cdao.conectar();
+if(status == false){
+    System.out.println("Erro de conexão");
+} else {
+    cdao.vendeProduto(Integer.parseInt(id_produto_venda.getText()));
+    JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+}
+cdao.desconectar();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+        vendasVIEW vendas = new vendasVIEW(); 
+        vendas.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -249,8 +292,7 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable tabela_produtos;
     // End of variables declaration//GEN-END:variables
 
-
-    // preencher a tabela
+ 
 
 
 }
