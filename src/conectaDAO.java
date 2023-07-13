@@ -5,16 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/**
- *
- * @author Adm
- */
 public class conectaDAO {
 
     Connection conn;
@@ -32,11 +26,8 @@ public class conectaDAO {
         }
     }
 
-
-    
     public int cadastrarProduto(ProdutosDTO produto) {
 
-        //conn = new conectaDAO().connectDB();
         int status;
         try {
             st = conn.prepareStatement("INSERT INTO produtos VALUES(?,?,?,?)");
@@ -45,25 +36,27 @@ public class conectaDAO {
             st.setInt(3, produto.getValor());
             st.setString(4, produto.getStatus());
             status = st.executeUpdate();
-            return status; //retornar 1
+            return status;
+
         } catch (SQLException ex) {
             System.out.println("Erro ao conectar: " + ex.getMessage());
             return ex.getErrorCode();
         }
     }
-        public int vendeProduto(int id) {
+
+    public int vendeProduto(int id) {
         int status;
         try {
 
             st = conn.prepareStatement("UPDATE produtos set status = ? WHERE id = ?");
-        
+
             st.setString(1, "Vendido");
             st.setInt(2, id);
 
-           status = st.executeUpdate();
+            status = st.executeUpdate();
             return status;
-        }
-      catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             System.out.println(ex.getErrorCode());
             return ex.getErrorCode();
         }
@@ -73,7 +66,7 @@ public class conectaDAO {
         try {
             conn.close();
         } catch (SQLException ex) {
-            //pode-se deixar vazio para evitar uma mensagem de erro desnecessária ao usuário
+
         }
     }
 

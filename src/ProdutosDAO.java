@@ -1,17 +1,23 @@
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ProdutosDAO {
     
     Connection conn;
     PreparedStatement st;
     ResultSet rs;
+           private final String url = "jdbc:mysql://localhost:3306/uc11?useTimezone=true&serverTimezone=UTC&useSSL=false";
+    private final String usuario = "root";
+    private final String senha = "michael1993";
+    vendasVIEW vw;
 
 
     public static final List<ProdutosDTO> dados = new ArrayList<>();
@@ -20,37 +26,49 @@ public class ProdutosDAO {
         return dados;
     }
 
-    public List<ProdutosDTO> listagem(String filtro) {
-        String sql = "select * from produtos";
-        if (!filtro.isEmpty()) {
-            sql = sql + " where nome like?";
-        }
+      public List<ProdutosDTO> listarProdutosVendidos() {
+        List<ProdutosDTO> produtosVendidos = new ArrayList<>();
         try {
-            st = conn.prepareStatement(sql);
-            if (!filtro.isEmpty()) {
-                st.setString(1, "%" + filtro + "%");
-            }
-            rs = st.executeQuery();
-            List<ProdutosDTO> listaProdutos = new ArrayList<>();
-            //verificar se a consulta encontrou o funcionário com a matrícula informada
-            while (rs.next()) { // se encontrou o funcionário, vamos carregar os dados
-                ProdutosDTO pdto = new ProdutosDTO();
-                pdto.setId(rs.getInt("id"));
-                pdto.setNome(rs.getString("nome"));
-                pdto.setValor(rs.getInt("valor"));
-                pdto.setStatus(rs.getString("status"));
-                listaProdutos.add(pdto);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/uc11?useTimezone=true&serverTimezone=UTC&useSSL=false", "root", "michael1993");
+            String query = "SELECT * FROM produtos WHERE STATUS = ?";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, "Vendido");
+            ResultSet resultSet = st.executeQuery();
 
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String nome = resultSet.getString("NOME");
+                int valor = resultSet.getInt("VALOR");
+                String status = resultSet.getString("STATUS");
+
+                ProdutosDTO produto = new ProdutosDTO(id, nome, valor, status);
+                produtosVendidos.add(produto);
             }
-            return listaProdutos;
-        } catch (SQLException ex) {
-            System.out.println("Erro ao conectar: " + ex.getMessage());
-            return null;
+
+            resultSet.close();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
+        return produtosVendidos;
     }
     
+     
+}
+     
+
     
+
 
     
   
-}
+
