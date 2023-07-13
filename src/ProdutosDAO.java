@@ -1,24 +1,26 @@
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.swing.JOptionPane;
 
 public class ProdutosDAO {
     
-        Connection conn;
+       Connection conn;
     PreparedStatement st;
     ResultSet rs;
-    
+
+
     public static final List<ProdutosDTO> dados = new ArrayList<>();
-    
-    public static List<ProdutosDTO> Listar(){
+
+    public static List<ProdutosDTO> Listar() {
         return dados;
     }
 
-     public List<ProdutosDTO> listagem(String filtro) {
+    public List<ProdutosDTO> listagem(String filtro) {
         String sql = "select * from produtos";
         if (!filtro.isEmpty()) {
             sql = sql + " where nome like?";
@@ -47,4 +49,6 @@ public class ProdutosDAO {
         }
     }
 
+    
+  
 }

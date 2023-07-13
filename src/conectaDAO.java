@@ -20,7 +20,6 @@ public class conectaDAO {
     Connection conn;
     PreparedStatement st;
     ResultSet rs;
-    String vendido = "vendido";
 
     public boolean conectar() {
         try {
@@ -33,6 +32,24 @@ public class conectaDAO {
         }
     }
 
+    public int vendeProduto(int id) {
+        int status;
+        try {
+
+            st = conn.prepareStatement("UPDATE produtos set status = ? WHERE id = ?");
+        
+            st.setString(1, "Vendido");
+            st.setInt(2, id);
+
+           status = st.executeUpdate();
+            return status;
+        }
+      catch (SQLException ex) {
+            System.out.println(ex.getErrorCode());
+            return ex.getErrorCode();
+        }
+    }
+    
     public int cadastrarProduto(ProdutosDTO produto) {
 
         //conn = new conectaDAO().connectDB();
@@ -50,7 +67,6 @@ public class conectaDAO {
             return ex.getErrorCode();
         }
     }
- 
 
     public void desconectar() {
         try {
